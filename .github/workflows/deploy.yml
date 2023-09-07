@@ -30,7 +30,7 @@ jobs:
       - name: Start the application
         run: npm start
 
-         - name: Set up Git
+      - name: Set up Git
         run: |
           git config user.email "seyeakinsola@gmail.com"
           git config user.name "israel0"
