@@ -1,0 +1,55 @@
+name: Node.js CI/CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Initialize NPM project
+        run: npm init -y
+        working-directory: ${{ github.workspace }}   
+      - name: Install dependencies
+        run: npm install express express-graphql graphql mongoose body-parser bcryptjs jsonwebtoken dotenv
+
+      - name: Install mongoose (if needed)
+        run: npm install mongoose
+
+      - name: Install nodemon (development dependency)
+        run: npm install nodemon --save-dev
+
+      - name: Start the application
+        run: npm start
+
+         - name: Set up Git
+        run: |
+          git config user.email "seyeakinsola@gmail.com"
+          git config user.name "israel0"
+
+      - name: Clone or pull the latest changes from graphql-types-service
+        run: |
+          if [ -d "graphql-types-service" ]; then
+            cd graphql-types-service
+            git pull
+            cd ..
+          else
+            git clone https://github.com/israel0/graphql-types-service.git
+          fi
+
+      - name: Copy schema.graphql to GraphQL service directory
+        run: |
+          cp graphql-types-service/schema/schema.graphql graphql-auth-service/src/schema/
+
+      - name: Copy types.ts to GraphQL service directory
+        run: |
+          cp graphql-types-service/types/types.ts graphql-auth-service/src/types/  
+
